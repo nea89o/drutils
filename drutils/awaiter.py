@@ -182,16 +182,19 @@ class AdvancedAwaiter:
         emoji = await self.emoji_choice(text, [YES_REACTION, NO_REACTION])
         return emoji == YES_REACTION
 
-    async def text(self, text: str):
+    async def text(self, text: str) -> str:
         return (await self(text)).content
 
-    async def guild_channel(self, text: str, check=lambda channel: True, writable=False) -> object:
+    async def guild_channel(self, text: str, check=lambda channel: True, writable=False) -> TextChannel:
         async def converter(mes: Message):
             return discord.utils.get(self.guild.channels,
                                      id=int(mes.content.translate(digit_keeper)))
 
+        if not self.guild:
+            raise ValueError("This can only be used in guilds")
+
         async def all_checks(channel: TextChannel):
-            if writable and not channel.permissions_for(self.bot.user).send_messages:
+            if writable and channel.guild == self.guild and not channel.permissions_for(channel.guild.me).send_messages:
                 return False
             return await await_if(check, channel)
 
