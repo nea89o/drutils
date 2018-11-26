@@ -12,5 +12,8 @@ matrix:
   - stage: lint
     name: Linting
     script: pylint
+  exclude:
+  - stage: lint
+    python: "3.4"
   allow_failures:
   - stage: lint
