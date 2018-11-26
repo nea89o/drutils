@@ -1,17 +1,18 @@
 language: python
-python:
-- "3.6"
-- "3.4"
-install: pip install tox-travis pylint
 
 matrix:
   fast_finish: true
   include:
   - stage: test
+    python:
+    - "3.6"
+    - "3.4"
+    install: pip install tox-travis
     name: Unit tests
     script: tox
   - stage: lint
     name: Linting
     script: pylint
+    install: pip install pylint
   allow_failures:
   - stage: lint
