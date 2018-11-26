@@ -12,7 +12,9 @@ matrix:
     script: tox
   - stage: lint
     name: Linting
-    script: pylint
+    python:
+    - "3.6"
+    script: pylint --rcfile pylintrc.cfg drutils
     install: pip install pylint
   allow_failures:
   - stage: lint
