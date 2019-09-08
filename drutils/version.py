@@ -17,4 +17,4 @@ class VersionInfo:
         return '{major}.{minor}.{build}{level}{serial}'.format(**self.__dict__)
 
 
-VERSION = VersionInfo(1, 0, 0, 'a', 0)
+VERSION = VersionInfo(1, 1, 0, 'b', 0)
