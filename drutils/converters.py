@@ -21,7 +21,7 @@ class AugmentedConverter(Converter):
         if isinstance(converter, Converter):
             converter = converter.convert
         result = await converter(ctx, argument)
-        if await maybe_coroutine(self.filter_function(result)):
+        if await maybe_coroutine(self.filter_function, result):
             return result
         raise UserInputError()
 
