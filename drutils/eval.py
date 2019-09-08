@@ -13,7 +13,8 @@ REPLACEMENTS = {
 }
 
 
-async def handle_eval(message: discord.Message, client: discord.Client, to_eval: str, **kwargs):
+async def handle_eval(message: discord.Message, client: discord.Client, to_eval: str,
+                      strip_codeblock: bool = False, **kwargs):
     channel = message.channel
     author = message.author
 
@@ -36,7 +37,13 @@ async def handle_eval(message: discord.Message, client: discord.Client, to_eval:
         'guild': channel.guild if hasattr(channel, 'guild') else None,
     }
     variables.update(kwargs)
+
     lines = to_eval.strip().split('\n')
+    if strip_codeblock:
+        if lines[0].startswith("```"):
+            lines = lines[1:]
+            lines[-1] = ''.join(lines[-1].rsplit('```', 1))
+
     block = '\n'.join(' ' + line for line in lines)
     code = ("async def code({variables}):\n"
             "{block}").format(variables=', '.join(variables.keys()), block=block)
